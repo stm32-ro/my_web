@@ -71,6 +71,7 @@ git push -u origin main   # 上传云端（第一次要 -u，以后不用）
 git add .
 git commit -m "Day X：随便写什么说明"
 git push
+**每一次都是把整个my-web文件夹盘点一遍，但只传有变化的一部分**
 ```
 
 ## 八、看懂 Git 输出的关键英文
@@ -94,3 +95,35 @@ git push
 ## 十、明天预告
 - Day 5：第一周总复习 + 阶段小测验
 - Day 6：正式开始写网页（HTML）！
+## 十一、补充：git status 与"没东西可提交"
+
+### 怎么看出来"挑了哪些改动"
+- `git status` = 看箱子的透视眼，用颜色区分三种状态：
+  - 🔴 红色 `Changes not staged`：改了，但还没 add（没装箱）
+  - 🟢 绿色 `Changes to be committed`：已经 add（已装箱，待封箱）
+  - `Untracked files`：全新的陌生文件，Git 从没见过
+
+### 看具体改了几个字
+- `git diff`：看还没 add 的改动（- 删除的行，+ 新增的行）
+- `git diff --staged`：看已 add 的改动
+
+### "nothing to commit, working tree clean" 是什么意思
+- 不是报错！意思是：**箱子是空的，电脑和云端已经完全一致**
+- 出现原因：上一轮三连已经把改动传完了，之后没改任何东西
+- 对应场景：重复跑 add/commit 时会看到，正常现象
+
+### push 输出的"快递详情"怎么读
+| 输出 | 意思 |
+|---|---|
+| `Enumerating objects` | 清点要发的包裹 |
+| `Compressing objects` | 打包压缩 |
+| `Writing objects: 100% ... 2.24 KiB` | 发送完毕（按增量传，只传变化部分，所以很小很快）|
+| `7d5d79e..325ca0d main -> main` | 版本从旧更新到新，推送成功 |
+| `Your branch is up to date with 'origin/main'` | 本地和云端同步，没有落后 |
+
+### 需要记住的两个范围概念
+- `git add .` 里的 `.` = **当前整个文件夹**（my-web 里所有改动都盘点）
+- 但实际装箱/上传的**只有真正改过的文件**，没动的不会重传
+- ⚠️ 因此：**my-web 文件夹里的一切都会上 GitHub（公开可见）**
+  - 绝不放密码、API Key、证件照等敏感信息
+  - Day 28 注册 DeepSeek 的 API Key 时，用 `.gitignore` 排除敏感文件
